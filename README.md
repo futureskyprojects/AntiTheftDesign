@@ -35,7 +35,7 @@
 </p>
 
 ## Sample project
-You can download the latest sample APK from this repo here: [Antitheft.apk](Demo/AntiTheft.apk)
+You can download the latest sample APK from this repo here: [Antitheft.apk](Demo/Antitheft.apk)
 
 ## Getting started
 #### 1. Connect to Firebase
