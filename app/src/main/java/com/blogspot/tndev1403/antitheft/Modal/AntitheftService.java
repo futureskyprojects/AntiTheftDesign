@@ -1,25 +1,28 @@
-package com.blogspot.tndev1403.antitheft.View;
+package com.blogspot.tndev1403.antitheft.Modal;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.blogspot.tndev1403.antitheft.Modal.Firebase;
 import com.blogspot.tndev1403.antitheft.R;
 import com.blogspot.tndev1403.antitheft.Stored.Config.Config;
+import com.blogspot.tndev1403.antitheft.View.Home;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AntitheftService extends Service {
     public final static String TAG = "Service";
@@ -152,6 +155,7 @@ public class AntitheftService extends Service {
     }
 
 
+    @SuppressLint("NewApi")
     void showNotification() {
         Intent notificationIntent = new Intent(AntitheftService.this, Home.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
@@ -161,15 +165,34 @@ public class AntitheftService extends Service {
         /* Create notification builder */
         notificationBuilder = new Notification.Builder(AntitheftService.this);
         /* Apply config */
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            notification = notificationBuilder.build();
-        }
+        notification = notificationBuilder.build();
         notification.icon = R.drawable.app_icon; // icon for services
         notification.flags = Notification.FLAG_ONGOING_EVENT;
         notification.contentIntent = pendingIntent;
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//        startForeground(Config.NOTIFICATION_REQUEST_CODE, notification);
         capture();
+    }
+
+
+    public boolean isInternetAvailable() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null;
+    }
+
+    void TimerCheckInternet() {
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                // if not connect to the network, set warning
+                if (!isInternetAvailable()) {
+                    warningNotification();
+                } else {
+                    capture();
+                }
+            }
+        }, 200, 300);
     }
 
     /* Now i won't use BoundServices */

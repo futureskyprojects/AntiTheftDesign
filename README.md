@@ -20,7 +20,7 @@
 <img src="Demo/Screenshots/exit.jpg" width="111" align="center">
 
 ## Sample project
-You can download the latest sample APK from this repo here: [Antitheft.apk](Demo/Antitheft.apk)
+You can download the latest sample APK from this repo here: [Antitheft.apk](Demo/AntiTheft.apk)
 
 ## Getting started
 #### 1. Connect to Firebase
@@ -35,6 +35,14 @@ You can read [document of google](https://developer.android.com/studio/write/fir
 #### 3. Replace google-services.json in this projects
 <img src="Demo/Screenshots/json3.png">
 
+## Update log
+#### 20/1/2019: v1.1.1 log
+```
+- Bugs stop application when apply data without internet connection
+- Alert for change sate buttons when lost connection
+- Change state header of activity and notification of service when internet connection state change
+- And add more bugs for fix later,...
+```
 ## Designer
 ### Name: Nguyen Trong Nghia
 ### Email: projects.futuresky@gmail.com

@@ -63,8 +63,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_information" />
-                            <entry key="sourceFile" value="C:\Users\Nghia\Downloads\information.svg" />
+                            <entry key="outputName" value="ic_no_wifi" />
+                            <entry key="sourceFile" value="C:\Users\Nghia\Downloads\no-wifi.svg" />
                           </map>
                         </option>
                       </PersistentState>

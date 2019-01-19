@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.blogspot.tndev1403.antitheft">
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -15,7 +17,7 @@
         android:theme="@style/TNdev1403Theme"
         tools:replace="android:icon,android:theme">
         <service
-            android:name=".View.AntitheftService"
+            android:name=".Modal.AntitheftService"
             android:enabled="true"
             android:exported="true"></service>
 

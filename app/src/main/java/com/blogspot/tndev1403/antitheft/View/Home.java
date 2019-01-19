@@ -1,15 +1,16 @@
 package com.blogspot.tndev1403.antitheft.View;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,10 +19,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blogspot.tndev1403.antitheft.Modal.AntitheftService;
+import com.blogspot.tndev1403.antitheft.Modal.Firebase;
 import com.blogspot.tndev1403.antitheft.Presenter.HomePresenter;
 import com.blogspot.tndev1403.antitheft.R;
 import com.blogspot.tndev1403.antitheft.Stored.Config.Config;
 import com.skyfishjy.library.RippleBackground;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import at.markushi.ui.CircleButton;
 
@@ -52,6 +58,7 @@ public class Home extends AppCompatActivity {
             "tài sản của bạn!";
     // Define static bolean
     public static boolean acitivyState = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,12 +70,14 @@ public class Home extends AppCompatActivity {
         // Atfer start activity, fist let disconnect state of house was shown, then check to
         // internet server and change later
         this.warning();
+        TimerCheckInternet();
     }
 
     void initServices() {
         antiTheftService = new Intent(Home.this, AntitheftService.class);
         startService(antiTheftService);
     }
+
     void initView() {
         safeEffect = (RippleBackground) findViewById(R.id.safe_effect);
         warningEffect = (RippleBackground) findViewById(R.id.warning_effect);
@@ -81,7 +90,7 @@ public class Home extends AppCompatActivity {
         topViewGroup = (LinearLayout) findViewById(R.id.top_view_group);
         infoButton = (ImageView) findViewById(R.id.btn_info);
         // Make padding for top view group
-        topViewGroup.setPadding(0,getStatusBarHeight(),0,0);
+        topViewGroup.setPadding(0, getStatusBarHeight(), 0, 0);
         // Transparent status bar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow();
@@ -98,8 +107,7 @@ public class Home extends AppCompatActivity {
 
     /* Region for view interactive */
     public void danger() {
-        if (!dangerEffect.isRippleAnimationRunning())
-        {
+        if (!dangerEffect.isRippleAnimationRunning()) {
             setStateDescription(DANGER_DESCRIPTION);
             changeTopViewGroupGackground(Config.DANGER_TYPE);
             stopAllSates(); // Stop all animate before
@@ -113,8 +121,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void safe() {
-        if (!safeEffect.isRippleAnimationRunning())
-        {
+        if (!safeEffect.isRippleAnimationRunning()) {
             setStateDescription(SAFE_DESCRIPTION);
             changeTopViewGroupGackground(Config.SAFE_TYPE);
             stopAllSates(); // Stop all animate before
@@ -128,8 +135,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void warning() {
-        if (!warningEffect.isRippleAnimationRunning())
-        {
+        if (!warningEffect.isRippleAnimationRunning()) {
             setStateDescription(WARNING_DESCRIPTION);
             changeTopViewGroupGackground(Config.WARNING_TYPE);
             stopAllSates(); // Stop all animate before
@@ -166,9 +172,11 @@ public class Home extends AppCompatActivity {
         }
         return result;
     }
+
     public void setStateDescription(String stateDescriptionString) {
         stateDescription.setText(stateDescriptionString);
     }
+
     public void changeTopViewGroupGackground(int type) {
         Drawable drawable = null;
         switch (type) {
@@ -179,8 +187,8 @@ public class Home extends AppCompatActivity {
             case Config.DANGER_TYPE:
                 drawable = (Drawable) getResources().getDrawable(R.drawable.bg_danger);
                 break;
-                default:
-                    drawable = (Drawable) getResources().getDrawable(R.drawable.bg_warning);
+            default:
+                drawable = (Drawable) getResources().getDrawable(R.drawable.bg_warning);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             topViewGroup.setBackground(drawable);
@@ -205,5 +213,34 @@ public class Home extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         acitivyState = true;
+    }
+
+    public boolean isInternetAvailable() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null;
+    }
+
+    void TimerCheckInternet() {
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Log.d("Timer", "run: OK! running...");
+                // if not connect to the network, set warning
+                if (!isInternetAvailable()) {
+                    Log.d("Timer", "run: OK! running... Met");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            warning();
+                        }
+                    });
+                } else {
+                    homePresenter.capture();
+                    Log.d("Timer", "run: CAPTURE!!!!!");
+                }
+            }
+        }, 200, 300);
     }
 }

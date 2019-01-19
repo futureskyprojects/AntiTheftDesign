@@ -1,10 +1,10 @@
 package com.blogspot.tndev1403.antitheft.Presenter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.VibrationEffect;
@@ -17,13 +17,12 @@ import com.blogspot.tndev1403.antitheft.BuildConfig;
 import com.blogspot.tndev1403.antitheft.Modal.Firebase;
 import com.blogspot.tndev1403.antitheft.R;
 import com.blogspot.tndev1403.antitheft.Stored.Config.Config;
-import com.blogspot.tndev1403.antitheft.View.AntitheftService;
 import com.blogspot.tndev1403.antitheft.View.Home;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
+import java.net.InetAddress;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
@@ -64,7 +63,10 @@ public class HomePresenter {
         home.safeButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-//                Processing(Config.SAFE_TYPE);
+                if (!home.isInternetAvailable()) {
+                    showNetWorkErrorDialog();
+                    return false;
+                }
                 updateState = new UpdateState();
                 updateState.execute(Config.SAFE_TYPE);
                 return true;
@@ -82,7 +84,10 @@ public class HomePresenter {
         home.dangerButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-//                Processing(Config.DANGER_TYPE);
+                if (!home.isInternetAvailable()) {
+                    showNetWorkErrorDialog();
+                    return false;
+                }
                 updateState = new UpdateState();
                 updateState.execute(Config.DANGER_TYPE);
                 return true;
@@ -126,9 +131,9 @@ public class HomePresenter {
             @Override
             public void onClick(View v) {
                 SweetAlertDialog description = new SweetAlertDialog(home, SweetAlertDialog.NORMAL_TYPE)
-                        .setTitleText(home.getResources().getString(R.string.app_name) + BuildConfig.VERSION_NAME)
+                        .setTitleText(home.getResources().getString(R.string.app_name) + " v" + BuildConfig.VERSION_NAME)
                         .setContentText("Đây là doạn mô tả về phần mềm!\nDesign by: Nguyễn Trọng " +
-                                "Nghĩa\nEmail: projects.futuresky@gmail.com\nPhone: 08 86 48 3147");
+                                "Nghĩa (08 86 48 314)");
                 description.setConfirmButton("Đóng", new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -155,7 +160,8 @@ public class HomePresenter {
     //endregion
 
     //region Capture data change from firebase
-    void doUpdate(Object value) {
+    public void doUpdate(Object value) {
+        // else, otherwise
         int i = -1;
         while (i < 10) {
             i++;
@@ -176,7 +182,7 @@ public class HomePresenter {
             }
         }
     }
-    private void capture() {
+    public void capture() {
         Firebase.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -193,8 +199,10 @@ public class HomePresenter {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                home.warning();
-                home.setStateDescription("Đã ngắt kết nối đến máy chủ.");
+                if (databaseError.getCode() == DatabaseError.DISCONNECTED) {
+                    home.warning();
+                    home.setStateDescription("Đã ngắt kết nối đến máy chủ.");
+                }
             }
         });
     }
@@ -220,8 +228,14 @@ public class HomePresenter {
                 });
                 return true;
             } catch (Exception e) {
+                home.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        stateDialog.cancel();
+                        home.warning();
+                    }
+                });
                 Log.d(TAG, "doInBackground: " + e.getMessage());
-                stateDialog.cancel();
                 return false;
             }
         }
@@ -367,11 +381,11 @@ public class HomePresenter {
     }
 
     public void cancelAlert() {
-        if (turnOffVibrate.isShowing())
-            turnOffVibrate.cancel();
+        cancelAlertSound();
         if (home.vb.hasVibrator())
             home.vb.cancel();
-        cancelAlertSound();
+        if (turnOffVibrate!=null && turnOffVibrate.isShowing())
+            turnOffVibrate.cancel();
     }
     public void vibrateAndShowDialog() {
         playAlertSound();
@@ -399,7 +413,12 @@ public class HomePresenter {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             turnOffVibrate.create();
         }
-        turnOffVibrate.show();
+        try
+        {
+            turnOffVibrate.show();
+        } catch (Exception e) {
+            //
+        }
     }
     //endregion
 
@@ -446,8 +465,22 @@ public class HomePresenter {
         }
     }
 
+    void showNetWorkErrorDialog() {
+        SweetAlertDialog noInternet = new SweetAlertDialog(home,
+                SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                .setTitleText("Mất kết nối!")
+                .setContentText("Vui lòng kiểm tra lại kết nối trước khi thao tác!")
+                .setCustomImage(R.drawable.ic_no_wifi)
+                .setConfirmButton("Đóng", null);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            noInternet.create();
+        }
+        noInternet.show();
+    }
+
     void AlertWhenPressButtonNotEnough() {
         Toasty.info(home, "Hãy nhấn giữ để xác nhận!", Toast.LENGTH_SHORT, true).show();
     }
     //endregion
+
 }

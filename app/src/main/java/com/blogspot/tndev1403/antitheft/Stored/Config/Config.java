@@ -9,7 +9,7 @@ public class Config {
     public final static int NOTIFICATION_REQUEST_CODE = 14031998;
     /* Default setting */
     public static int VIBRATE_TIME = 500; // (miliseconds)
-    public static long[][] VIBRATE_WAVE = {{100, 300, 50, 400},{10}};
+    public static long[][] VIBRATE_WAVE = {{50, 100, 200, 300, 400, 1000},{4}};
     /* Firebase */
     public final static String REFERENCE_STRING = "Laze";
 }
