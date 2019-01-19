@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="button_size">100dp</dimen>
+    <dimen name="ripple_radius">19dp</dimen>
+    <dimen name="effect_margin">50dp</dimen>
+</resources>

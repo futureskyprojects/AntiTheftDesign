@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.Home">
+    <LinearLayout
+        android:id="@+id/top_view_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_view_group"
+        android:orientation="vertical"
+        android:background="@drawable/bg_warning">
+        <RelativeLayout
+            android:id="@+id/container_toolbar_group"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@drawable/toolbar_bg"/>
+            <TextView
+                android:textColor="@android:color/white"
+                android:textSize="25dp"
+                android:fontFamily="serif"
+                android:shadowColor="#c8d6e5"
+                android:shadowDx="4"
+                android:shadowDy="4"
+                android:shadowRadius="5"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:gravity="center"
+                android:layout_centerInParent="true"/>
+
+            <ImageView
+                android:tint="@android:color/white"
+                android:outlineSpotShadowColor="#c8d6e5"
+                android:outlineAmbientShadowColor="#48dbfb"
+                android:padding="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_width="@android:dimen/app_icon_size"
+                android:layout_height="@android:dimen/app_icon_size"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/app_icon" />
+
+            <ImageView
+                android:id="@+id/btn_info"
+                android:paddingRight="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_information"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!-- Show when home have safe signal -->
+            <com.skyfishjy.library.RippleBackground xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/safe_effect"
+                android:layout_marginBottom="@dimen/effect_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                app:rb_color="@color/safeSignal"
+                app:rb_duration="3200"
+                app:rb_radius="@dimen/ripple_radius"
+                app:rb_rippleAmount="4"
+                app:rb_scale="6">
+
+                <ImageView
+                    android:id="@+id/safe_home_icon"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/home_safe" />
+            </com.skyfishjy.library.RippleBackground>
+            <!-- Show when home have theft signal -->
+            <com.skyfishjy.library.RippleBackground xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/danger_effect"
+                android:layout_marginBottom="@dimen/effect_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                app:rb_color="@color/dangerSignal"
+                app:rb_duration="1500"
+                app:rb_radius="@dimen/ripple_radius"
+                app:rb_rippleAmount="4"
+                app:rb_scale="6">
+
+                <ImageView
+                    android:id="@+id/theft_icon"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_thief" />
+            </com.skyfishjy.library.RippleBackground>
+            <!-- Show when home havn't signal -->
+            <com.skyfishjy.library.RippleBackground xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/warning_effect"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                android:layout_marginBottom="@dimen/effect_margin"
+                app:rb_color="@color/warningSignal"
+                app:rb_duration="2300"
+                app:rb_radius="@dimen/ripple_radius"
+                app:rb_rippleAmount="4"
+                app:rb_scale="6">
+
+                <ImageView
+                    android:id="@+id/home_disconnect_icon"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/home_disconnect" />
+            </com.skyfishjy.library.RippleBackground>
+
+            <TextView
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:maxLines="2"
+                android:id="@+id/state_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="15dp"
+                android:shadowColor="@android:color/holo_blue_dark"
+                android:shadowDx="3"
+                android:shadowDy="2"
+                android:shadowRadius="3"
+                android:text="Đây là đoạn mô tả sẽ được hiển thị"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_view_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/btn_disconnect_server"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+                    <at.markushi.ui.CircleButton
+                        android:id="@+id/btn_turn_alert_off"
+                        android:layout_width="@dimen/button_size"
+                        android:layout_height="@dimen/button_size"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_shield"
+                        app:cb_color="#7ed6df"
+                        app:cb_pressedRingWidth="8dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/btn_turn_alert_off"
+                        android:layout_centerHorizontal="true"
+                        android:shadowColor="#686de0"
+                        android:shadowDx="3"
+                        android:shadowDy="2"
+                        android:shadowRadius="3"
+                        android:text="AN TOÀN"
+                        android:textColor="@color/safeSignal"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <at.markushi.ui.CircleButton
+                        android:id="@+id/btn_turn_alert_on"
+                        android:layout_width="@dimen/button_size"
+                        android:layout_height="@dimen/button_size"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_thief"
+                        app:cb_color="#ff7979"
+                        app:cb_pressedRingWidth="8dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/btn_turn_alert_on"
+                        android:layout_centerHorizontal="true"
+                        android:shadowColor="#f9ca24"
+                        android:shadowDx="3"
+                        android:shadowDy="2"
+                        android:shadowRadius="3"
+                        android:text="CÓ TRỘM"
+                        android:textColor="@color/dangerSignal"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_disconnect_server"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_alignParentBottom="true"
+            android:background="#eb4d4b"
+            android:text="NGẮT KẾT NỐI"
+            android:textColor="@android:color/white"
+            android:textSize="18dp" />
+    </LinearLayout>
+</RelativeLayout>

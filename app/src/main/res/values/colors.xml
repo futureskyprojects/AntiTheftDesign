@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#74b9ff</color>
+    <color name="colorPrimaryDark">#0984e3</color>
+    <color name="colorAccent">#d63031</color>
+    <color name="safeSignal">#0099CC</color>
+    <color name="dangerSignal">#eb4d4b</color>
+    <color name="warningSignal">#f9ca24</color>
+</resources>
