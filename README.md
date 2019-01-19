@@ -9,6 +9,15 @@
 * Vibrate and Alert sound when have theft
 * Beautiful design,...
 
+## Update log
+#### 20/1/2019: Version 1.1.1 logs
+```
+- Bugs stop application when apply data without internet connection
+- Alert for change sate buttons when lost connection
+- Change state header of activity and notification of service when internet connection state change
+- And add more bugs for fix later,...
+```
+
 ## Screenshots
 ### 1. Activity
 <img src="Demo/Screenshots/ListActivityDemo.png">
@@ -17,7 +26,7 @@
 <img src="Demo/Screenshots/ListNotify.png">
 
 ### 3. Exit
-<img src="Demo/Screenshots/exit.jpg" width="111" align="center">
+<img src="Demo/Screenshots/exit.jpg" width="333" align="center">
 
 ## Sample project
 You can download the latest sample APK from this repo here: [Antitheft.apk](Demo/AntiTheft.apk)
@@ -35,16 +44,8 @@ You can read [document of google](https://developer.android.com/studio/write/fir
 #### 3. Replace google-services.json in this projects
 <img src="Demo/Screenshots/json3.png">
 
-## Update log
-#### 20/1/2019: v1.1.1 log
-```
-- Bugs stop application when apply data without internet connection
-- Alert for change sate buttons when lost connection
-- Change state header of activity and notification of service when internet connection state change
-- And add more bugs for fix later,...
-```
 ## Designer
-### Name: Nguyen Trong Nghia
-### Email: projects.futuresky@gmail.com
-### Phone: +84 86 48 3147
-### Blogger: [TNdev1403](https://tndev1403.blogspot.com)
+#### Name: [Nguyen Trong Nghia](https://www.facebook.com/tx.trongnghia98)
+#### Email: projects.futuresky@gmail.com
+#### Phone: +84 86 48 3147
+#### Blogger: [TNdev1403](https://tndev1403.blogspot.com)
