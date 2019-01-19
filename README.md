@@ -19,13 +19,19 @@
 
 ## Screenshots
 ### 1. Activity
-<img src="Demo/Screenshots/ListActivityDemo.png">
+<p align="center">
+	<img src="Demo/Screenshots/ListActivityDemo.png">
+</p>
 
 ### 2. Toaty and Notify
-<img src="Demo/Screenshots/ListNotify.png">
+<p align="center">
+	<img src="Demo/Screenshots/ListNotify.png">
+</p>
 
 ### 3. Exit
-<img src="Demo/Screenshots/exit.jpg" width="333" align="center">
+<p align="center">
+	<img src="Demo/Screenshots/exit.jpg" width="333">
+</p>
 
 ## Sample project
 You can download the latest sample APK from this repo here: [Antitheft.apk](Demo/AntiTheft.apk)
@@ -35,13 +41,19 @@ You can download the latest sample APK from this repo here: [Antitheft.apk](Demo
 You can read [document of google](https://developer.android.com/studio/write/firebase), it has full detail for you setting.
 
 #### 2. Slect your liked applications
-<img src="Demo/Screenshots/json1.png">
+<p align="center">
+	<img src="Demo/Screenshots/json1.png">
+</p>
 
 #### 3. Config and do like document to download google-services.json
-<img src="Demo/Screenshots/json2.png">
+<p align="center">
+	<img src="Demo/Screenshots/json2.png">
+</p>
 
 #### 3. Replace google-services.json in this projects
-<img src="Demo/Screenshots/json3.png">
+<p align="center">
+	<img src="Demo/Screenshots/json3.png">
+</p>
 
 ## Designer
 #### Name: [Nguyen Trong Nghia](https://www.facebook.com/tx.trongnghia98)
