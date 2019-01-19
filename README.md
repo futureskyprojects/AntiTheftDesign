@@ -46,12 +46,12 @@ You can read [document of google](https://developer.android.com/studio/write/fir
 	<img src="Demo/Screenshots/json1.png">
 </p>
 
-#### 3. Config and do like document to download google-services.json
+#### 3. Config and do like document to download ```oogle-services.json```
 <p align="center">
 	<img src="Demo/Screenshots/json2.png">
 </p>
 
-#### 3. Replace google-services.json in this projects
+#### 3. Replace ```google-services.json``` in this projects
 <p align="center">
 	<img src="Demo/Screenshots/json3.png">
 </p>
