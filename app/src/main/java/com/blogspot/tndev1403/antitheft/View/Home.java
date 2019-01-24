@@ -57,7 +57,8 @@ public class Home extends AppCompatActivity {
     public final static String DANGER_DESCRIPTION = "Báo động đã được kích hoạt, hãy chú ý đến " +
             "tài sản của bạn!";
     // Define static bolean
-    public static boolean acitivyState = true;
+    public static boolean acitivyState = false;
+    public boolean isAutoAlert = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,16 +122,17 @@ public class Home extends AppCompatActivity {
     }
 
     public void safe() {
-        if (!safeEffect.isRippleAnimationRunning()) {
-            setStateDescription(SAFE_DESCRIPTION);
-            changeTopViewGroupGackground(Config.SAFE_TYPE);
-            stopAllSates(); // Stop all animate before
-            // If it was hidden, show it aganin before run animate
-            if (safeEffect.getVisibility() == View.INVISIBLE)
-                safeEffect.setVisibility(View.VISIBLE);
-            safeEffect.startRippleAnimation();
-            //
-            homePresenter.cancelAlert();
+        if (!isAutoAlert || (warningEffect.isRippleAnimationRunning() && isInternetAvailable())) {
+            if (!safeEffect.isRippleAnimationRunning()) {
+                setStateDescription(SAFE_DESCRIPTION);
+                changeTopViewGroupGackground(Config.SAFE_TYPE);
+                stopAllSates(); // Stop all animate before
+                // If it was hidden, show it aganin before run animate
+                if (safeEffect.getVisibility() == View.INVISIBLE)
+                    safeEffect.setVisibility(View.VISIBLE);
+                safeEffect.startRippleAnimation();
+            }
+            isAutoAlert = true;
         }
     }
 
@@ -212,7 +214,15 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
+        homePresenter.checkServiceState();
         acitivyState = true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        acitivyState = true;
+        homePresenter.checkServiceState();
     }
 
     public boolean isInternetAvailable() {
@@ -226,10 +236,8 @@ public class Home extends AppCompatActivity {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                Log.d("Timer", "run: OK! running...");
                 // if not connect to the network, set warning
                 if (!isInternetAvailable()) {
-                    Log.d("Timer", "run: OK! running... Met");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -238,7 +246,6 @@ public class Home extends AppCompatActivity {
                     });
                 } else {
                     homePresenter.capture();
-                    Log.d("Timer", "run: CAPTURE!!!!!");
                 }
             }
         }, 200, 300);

@@ -10,6 +10,14 @@
 * Beautiful design,...
 
 ## Update log
+#### 25/1/2019: Version 1.2.0 logs
+````
+- Change input values to a string type
+- Fix services not start when have alert
+- Switch firebase projects
+- Remove option auto close alert when change value of sensor
+````
+
 #### 20/1/2019: Version 1.1.1 logs
 ```
 - Bugs stop application when apply data without internet connection

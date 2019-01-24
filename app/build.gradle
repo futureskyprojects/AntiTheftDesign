@@ -9,8 +9,8 @@ android {
         applicationId "com.blogspot.tndev1403.antitheft"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 110
-        versionName "1.1.0"
+        versionCode 120
+        versionName "1.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -37,4 +37,3 @@ dependencies {
         exclude module: 'support-v4'
     }
 }
-apply plugin: 'com.google.gms.google-services'

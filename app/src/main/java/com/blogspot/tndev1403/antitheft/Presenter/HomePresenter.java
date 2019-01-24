@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.blogspot.tndev1403.antitheft.BuildConfig;
+import com.blogspot.tndev1403.antitheft.Modal.AntitheftService;
 import com.blogspot.tndev1403.antitheft.Modal.Firebase;
 import com.blogspot.tndev1403.antitheft.R;
 import com.blogspot.tndev1403.antitheft.Stored.Config.Config;
@@ -64,9 +65,11 @@ public class HomePresenter {
             @Override
             public boolean onLongClick(View v) {
                 if (!home.isInternetAvailable()) {
+                    home.isAutoAlert = false;
                     showNetWorkErrorDialog();
                     return false;
                 }
+                home.isAutoAlert = false;
                 updateState = new UpdateState();
                 updateState.execute(Config.SAFE_TYPE);
                 return true;
@@ -173,7 +176,7 @@ public class HomePresenter {
                     home.danger();
                 return;
             } catch (Exception e) {
-                Log.e(TAG, "doUpdate: " + e );
+                Log.e(TAG, "doUpdate: " + e);
                 try {
                     Thread.sleep(2);
                 } catch (InterruptedException e1) {
@@ -182,6 +185,7 @@ public class HomePresenter {
             }
         }
     }
+
     public void capture() {
         Firebase.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -214,7 +218,7 @@ public class HomePresenter {
         @Override
         protected Boolean doInBackground(Integer... types) {
             try {
-                Firebase.databaseReference.setValue(types[0]);
+                Firebase.databaseReference.setValue("" + types[0]);
                 final int temp = types[0];
                 home.runOnUiThread(new Runnable() {
                     @Override
@@ -275,6 +279,7 @@ public class HomePresenter {
             DestroyAsyncTask();
         }
     }
+
     private class DestroyAll extends AsyncTask<Boolean, Integer, Boolean> {
 
         @Override
@@ -301,8 +306,7 @@ public class HomePresenter {
             destroyAllDialog.setCancelButton("Hủy", new SweetAlertDialog.OnSweetClickListener() {
                 @Override
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
-                    if (destroyAll != null && !destroyAll.isCancelled())
-                    {
+                    if (destroyAll != null && !destroyAll.isCancelled()) {
                         destroyAll.cancel(true);
                     }
                     sweetAlertDialog.cancel();
@@ -326,8 +330,7 @@ public class HomePresenter {
             if (aBoolean) {
                 showSuccessDialog();
                 home.finish();
-            }
-            else
+            } else
                 showFailDialog();
             DestroyAsyncTask();
         }
@@ -340,7 +343,7 @@ public class HomePresenter {
                 home.mp.release();
             }
         } catch (Exception e) {
-            Log.e(TAG, "cancelMediaPlayer: " + e.getMessage() );
+            Log.e(TAG, "cancelMediaPlayer: " + e.getMessage());
         }
     }
 
@@ -367,6 +370,7 @@ public class HomePresenter {
         playAlertSound.setLooping(true);
         playAlertSound.start();
     }
+
     public void cancelAlertSound() {
         try {
             if (playAlertSound != null && playAlertSound.isPlaying()) {
@@ -376,7 +380,7 @@ public class HomePresenter {
                 playAlertSound.release();
             }
         } catch (Exception e) {
-            Log.e(TAG, "cancelMediaPlayer: " + e.getMessage() );
+            Log.e(TAG, "cancelMediaPlayer: " + e.getMessage());
         }
     }
 
@@ -384,9 +388,10 @@ public class HomePresenter {
         cancelAlertSound();
         if (home.vb.hasVibrator())
             home.vb.cancel();
-        if (turnOffVibrate!=null && turnOffVibrate.isShowing())
+        if (turnOffVibrate != null && turnOffVibrate.isShowing())
             turnOffVibrate.cancel();
     }
+
     public void vibrateAndShowDialog() {
         playAlertSound();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -413,8 +418,7 @@ public class HomePresenter {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             turnOffVibrate.create();
         }
-        try
-        {
+        try {
             turnOffVibrate.show();
         } catch (Exception e) {
             //
@@ -482,5 +486,12 @@ public class HomePresenter {
         Toasty.info(home, "Hãy nhấn giữ để xác nhận!", Toast.LENGTH_SHORT, true).show();
     }
     //endregion
+
+    public void checkServiceState() {
+        if (AntitheftService.isDanger)
+        {
+            home.danger();
+        }
+    }
 
 }

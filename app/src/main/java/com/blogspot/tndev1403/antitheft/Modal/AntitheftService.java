@@ -26,6 +26,7 @@ import java.util.TimerTask;
 
 public class AntitheftService extends Service {
     public final static String TAG = "Service";
+    public static boolean isDanger = false;
     NotificationManager notificationManager;
     Notification notification;
     Notification.Builder notificationBuilder;
@@ -58,7 +59,8 @@ public class AntitheftService extends Service {
         };
         this.mIntent = intent;
         showNotification();
-        return Service.START_REDELIVER_INTENT;
+        TimerCheckInternet();
+        return Service.START_STICKY;
     }
 
     /* Capture function */
@@ -97,7 +99,6 @@ public class AntitheftService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Firebase.databaseReference.removeEventListener(valueEventListener);
         notification.flags = STOP_FOREGROUND_REMOVE;
         notification.contentIntent = null;
         notificationManager.cancelAll();
@@ -114,6 +115,7 @@ public class AntitheftService extends Service {
             notificationBuilder.setColor(ContextCompat.getColor(AntitheftService.this,
                     R.color.safeSignal));
         }
+        isDanger = false;
         notificationBuilder.setContentTitle("YÊN TĨNH");
         notificationBuilder.setContentText(Home.SAFE_DESCRIPTION);
         notificationBuilder.setProgress(0, 0, false);
@@ -127,6 +129,7 @@ public class AntitheftService extends Service {
             notificationBuilder.setColor(ContextCompat.getColor(AntitheftService.this,
                     R.color.warningSignal));
         }
+        isDanger = false;
         notificationBuilder.setContentTitle("MẤT KẾT NỐI");
         notificationBuilder.setContentText(Home.WARNING_DESCRIPTION);
         notificationBuilder.setProgress(100, 30, true);
@@ -140,6 +143,7 @@ public class AntitheftService extends Service {
             notificationBuilder.setColor(ContextCompat.getColor(AntitheftService.this,
                     R.color.dangerSignal));
         }
+        isDanger = true;
         notificationBuilder.setContentTitle("BÁO ĐỘNG");
         notificationBuilder.setContentText(Home.DANGER_DESCRIPTION);
         notificationBuilder.setProgress(0, 0, false);
@@ -155,7 +159,6 @@ public class AntitheftService extends Service {
     }
 
 
-    @SuppressLint("NewApi")
     void showNotification() {
         Intent notificationIntent = new Intent(AntitheftService.this, Home.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
@@ -165,7 +168,9 @@ public class AntitheftService extends Service {
         /* Create notification builder */
         notificationBuilder = new Notification.Builder(AntitheftService.this);
         /* Apply config */
-        notification = notificationBuilder.build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            notification = notificationBuilder.build();
+        }
         notification.icon = R.drawable.app_icon; // icon for services
         notification.flags = Notification.FLAG_ONGOING_EVENT;
         notification.contentIntent = pendingIntent;
@@ -187,7 +192,8 @@ public class AntitheftService extends Service {
             public void run() {
                 // if not connect to the network, set warning
                 if (!isInternetAvailable()) {
-                    warningNotification();
+                    if (perviousType != Config.WARNING_TYPE)
+                        warningNotification();
                 } else {
                     capture();
                 }

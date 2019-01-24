@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "492109219463-364h5hmsiecqdivdht7esk7lo7mg3cfi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blogspot.tndev1403.antitheft",
+            "certificate_hash": "6d56f30bee04205e99739fdd690ceff6a7d2a97f"
+          }
+        },
+        {
           "client_id": "492109219463-2e505muk9mab8bpilsi1jgt7bq5dcn7k.apps.googleusercontent.com",
           "client_type": 3
         }
