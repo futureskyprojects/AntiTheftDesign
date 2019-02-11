@@ -170,8 +170,10 @@ public class HomePresenter {
             i++;
             try {
                 int type = Integer.parseInt("" + value);
-                if (type == Config.SAFE_TYPE)
+                if (type == Config.SAFE_TYPE) {
                     home.safe();
+                    Toast.makeText(home, "Đã an toàn!", Toast.LENGTH_SHORT).show();
+                }
                 else if (type == Config.DANGER_TYPE)
                     home.danger();
                 return;

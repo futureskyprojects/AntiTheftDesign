@@ -122,18 +122,19 @@ public class Home extends AppCompatActivity {
     }
 
     public void safe() {
-        if (!isAutoAlert || (warningEffect.isRippleAnimationRunning() && isInternetAvailable())) {
-            if (!safeEffect.isRippleAnimationRunning()) {
-                setStateDescription(SAFE_DESCRIPTION);
-                changeTopViewGroupGackground(Config.SAFE_TYPE);
-                stopAllSates(); // Stop all animate before
-                // If it was hidden, show it aganin before run animate
-                if (safeEffect.getVisibility() == View.INVISIBLE)
-                    safeEffect.setVisibility(View.VISIBLE);
-                safeEffect.startRippleAnimation();
-            }
-            isAutoAlert = true;
+        if (!safeEffect.isRippleAnimationRunning()) {
+            setStateDescription(SAFE_DESCRIPTION);
+            changeTopViewGroupGackground(Config.SAFE_TYPE);
+            stopAllSates(); // Stop all animate before
+            // If it was hidden, show it aganin before run animate
+            if (safeEffect.getVisibility() == View.INVISIBLE)
+                safeEffect.setVisibility(View.VISIBLE);
+            safeEffect.startRippleAnimation();
         }
+//        if (!isAutoAlert || (warningEffect.isRippleAnimationRunning() && isInternetAvailable())) {
+//
+//            isAutoAlert = true;
+//        }
     }
 
     public void warning() {
