@@ -135,8 +135,7 @@ public class HomePresenter {
             public void onClick(View v) {
                 SweetAlertDialog description = new SweetAlertDialog(home, SweetAlertDialog.NORMAL_TYPE)
                         .setTitleText(home.getResources().getString(R.string.app_name) + " v" + BuildConfig.VERSION_NAME)
-                        .setContentText("Đây là doạn mô tả về phần mềm!\nDesign by: Nguyễn Trọng " +
-                                "Nghĩa (08 86 48 314)");
+                        .setContentText("Ngô Minh Quân");
                 description.setConfirmButton("Đóng", new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
